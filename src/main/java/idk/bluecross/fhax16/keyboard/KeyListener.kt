@@ -1,7 +1,5 @@
 package idk.bluecross.fhax16.keyboard
 
-import idk.bluecross.fhax16.LOGGER
-import net.minecraftforge.client.event.GuiScreenEvent.KeyboardKeyPressedEvent
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.eventbus.api.SubscribeEvent
@@ -16,7 +14,7 @@ object KeyListener {
     @SubscribeEvent
     fun onKey(e: KeyInputEvent) {
         if (e.key != GLFW.GLFW_KEY_UNKNOWN) {
-            binds[e.key]?.invoke()
+            binds[e.key]?.forEach { it.invoke() }
         }
     }
 }

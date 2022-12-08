@@ -2,8 +2,6 @@ package idk.bluecross.fhax16.module
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 import idk.bluecross.fhax16.keyboard.KeyBind
 import idk.bluecross.fhax16.modules
 import idk.bluecross.fhax16.settings.ISettingAbstract
@@ -11,17 +9,17 @@ import net.minecraftforge.common.MinecraftForge
 import org.lwjgl.glfw.GLFW
 import java.util.stream.Collectors
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
+
 abstract class Module(
-    @JsonProperty("name") val name: String,
+    @JsonIgnore val name: String,
     val description: String,
-    val key: Int = GLFW.GLFW_KEY_UNKNOWN
+    var key: Int = GLFW.GLFW_KEY_UNKNOWN
 ) {
     @JsonIgnore
     private var isEnabled = false
     private var keybind: KeyBind
     lateinit var category: Category
-    val settings = arrayListOf<ISettingAbstract>()
+    var settings = arrayListOf<ISettingAbstract>()
 
     init {
         keybind = KeyBind(key, ::toggle)
@@ -33,16 +31,16 @@ abstract class Module(
     }
 
     @JsonAnyGetter
-    private fun collectSettingsToJson(): Map<String, String> {
+    private fun collectSettingsToJson(): Map<String, HashMap<String, String>> {
         val map = hashMapOf<String, String>()
-        map["enabled"] = "false"
-        map["key"] = getKeyBindAsString()
+        map["enabled"] = isEnabled.toString()
         map.putAll(
             settings.stream().collect(Collectors.toMap(ISettingAbstract::name, ISettingAbstract::getValueAsString))
         );
-        return map
+        return mapOf(name to map)
     }
 
+    @JsonIgnore
     fun isEnabled() = isEnabled
 
     fun enable() {

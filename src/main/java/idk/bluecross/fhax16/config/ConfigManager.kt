@@ -1,11 +1,9 @@
 package idk.bluecross.fhax16.config
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import idk.bluecross.fhax16.module.Module
 import idk.bluecross.fhax16.modules
 import java.io.File
 
@@ -28,12 +26,36 @@ object ConfigManager {
         if (!file.exists()) file.createNewFile()
     }
 
-    fun saveCfg() {
-        jackson.writeValue(file, modules)
+    fun saveCfg(file: File = this.file) {
+        try {
+            jackson.writeValue(file, modules)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    fun getCfg(): List<*>? {
-        val result = jackson.readValue(file, List::class.java)
-        return result
+    fun getCfg(file: File = this.file): Array<Map<String, HashMap<String, String>>>? {
+        try {
+            val tobe = arrayOf<Map<String, HashMap<String, String>>>()
+            val result = jackson.readValue(file, tobe::class.java)
+            result.forEach {
+                it.forEach {
+                    val realModule = modules.first { m -> m.name == it.key }
+                    val settings = it.value
+                    if (settings["enabled"].toBoolean()) realModule.enable() else realModule.disable()
+                    settings.remove("enabled")
+                    settings.forEach { q ->
+                        val setting = realModule.settings.firstOrNull {
+                            it.name == q.key
+                        } ?: return@forEach
+                        setting.setValByString(q.value)
+                    }
+                }
+            }
+            return result
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return arrayOf()
     }
 }

@@ -1,14 +1,10 @@
 package idk.bluecross.fhax16.chat.command.commands
 
-import idk.bluecross.fhax16.LOGGER
 import idk.bluecross.fhax16.chat.command.AbstractCommand
 import idk.bluecross.fhax16.chat.command.ChatCommandsManager.prefix
 import idk.bluecross.fhax16.module.Module
 import idk.bluecross.fhax16.modules
-import idk.bluecross.fhax16.settings.ISettingAbstract
-import idk.bluecross.fhax16.settings.SettingPage
 import idk.bluecross.fhax16.util.ChatUtil
-import java.util.Arrays
 
 object ModuleCommand : AbstractCommand("module") {
     override fun process(args: ArrayList<String>) {     // !module name disable/enable/setting
@@ -87,7 +83,7 @@ object ModuleCommand : AbstractCommand("module") {
         override fun process(args: ArrayList<String>) {
             val name = args[0] // value
             val settings = modules.first {
-                it.name == name
+                it.name.lowercase() == name.lowercase()
             }.settings
             var prettyList = ""
             settings.forEach {

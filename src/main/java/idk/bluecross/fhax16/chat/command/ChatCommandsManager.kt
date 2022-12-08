@@ -1,7 +1,5 @@
 package idk.bluecross.fhax16.chat.command
 
-import idk.bluecross.fhax16.LOGGER
-import idk.bluecross.fhax16.module.Module
 import idk.bluecross.fhax16.util.ChatUtil
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.common.MinecraftForge
@@ -20,7 +18,11 @@ object ChatCommandsManager {
         classes.filter {
             !it.kotlin.isAbstract
         }.forEach {
-            commandsList.add(it.classLoader.loadClass(it.canonicalName).kotlin.objectInstance as AbstractCommand)
+            (it.classLoader.loadClass(it.canonicalName).kotlin.objectInstance as? AbstractCommand)?.let { it1 ->
+                commandsList.add(
+                    it1
+                )
+            }
         }
     }
 
@@ -32,18 +34,18 @@ object ChatCommandsManager {
         if (msg.startsWith("!")) {
             msg = msg.removePrefix("!")
             val cmd = commandsList.firstOrNull {
-                it.cmd == msg.split(" ")[0]
+                it.cmd.lowercase() == msg.split(" ")[0].lowercase()
             }
-            if (cmd != null){
+            if (cmd != null) {
                 ChatUtil.sendToMe("$msg -> Executing... ")
-                if (msg.split(" ").size >= 2){       // if we have args in our command (name arg)
+                if (msg.split(" ").size >= 2) {       // if we have args in our command (name arg)
                     cmd.process(ArrayList(msg.split(" ").subList(1, msg.split(" ").size).toList()))
-                }else{  //if we havent enough args to do sublist
+                } else {  //if we havent enough args to do sublist
                     val list = ArrayList(msg.split(" ").toList())
                     list.removeFirst() // cmd name
                     cmd.process(list)       // this way its may be error but in Command class, where its handled so its ok i think
                 }
-            }else{
+            } else {
                 ChatUtil.sendToMe("Command not found")
             }
             e.isCanceled = true
