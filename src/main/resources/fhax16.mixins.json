@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "idk.bluecross.fhax16.mixin.impl",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "fhax16.mixins.refmap.json",
+  "mixins": [
+    "MixinAbstractHorse"
+  ]
+}
