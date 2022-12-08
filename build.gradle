@@ -88,8 +88,10 @@ dependencies {
     shadow 'com.fasterxml.jackson.core:jackson-annotations:2.14.0'
 }
 
-jar {
-    manifest {
+shadowJar {
+    classifier 'readyToGo'
+
+        manifest {
         attributes([
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
@@ -101,29 +103,34 @@ jar {
                 "MixinConfigs"            : "fhax16.mixins.json"
         ])
     }
-}
 
-configurations {
-    shadow
-    implementation.extendsFrom shadow
-}
-
-shadowJar {
-    classifier 'readyToGo'
-
-    project.configurations.shadow.setTransitive(true)
+    //project.configurations.shadow.setTransitive(true)
     configurations = [project.configurations.shadow]
     exclude 'DebugProbesKt.bin'
     exclude 'LICENSE.txt'
     exclude 'dummyThing'
+    exclude '**/module-info.class',
+            'DebugProbesKt.bin',
+            'META-INF/proguard/**',
+            'META-INF/versions/**',
+            'META-INF/**.RSA',
+            'META-INF/com.android.tools/**',
+            'META-INF/*.kotlin_module',
+            'kotlin/**/*.kotlin_metadata',
+            'kotlin/**/*.kotlin_builtins',
+            'META-INF/*.version'
+
+    finalizedBy('reobfShadowJar')
 }
+
+assemble.dependsOn shadowJar
 
 reobf {
     shadowJar {}
+    jar {
+        enabled = false
+    }
 }
-
-tasks.build.dependsOn reobfShadowJar
-jar.finalizedBy('reobfShadowJar')
 
 mixin {
     sourceSets {

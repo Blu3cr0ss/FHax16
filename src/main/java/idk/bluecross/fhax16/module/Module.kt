@@ -82,7 +82,8 @@ abstract class Module(
         PVP,
         MOVEMENT,
         PLAYER,
-        CLIENT
+        CLIENT,
+        RENDER
     }
 
     fun getCategoryByString(str: String): Category {
@@ -92,6 +93,7 @@ abstract class Module(
             "MOVEMENT" -> Category.MOVEMENT
             "PLAYER" -> Category.PLAYER
             "CLIENT" -> Category.CLIENT
+            "RENDER" -> Category.RENDER
             else -> Category.CLIENT
         }
     }

@@ -47,12 +47,5 @@ class FHax16 {
         KeyListener //init
         ChatCommandsManager
         ConfigManager
-        event.enqueueWork(::setTitle)
-    }
-
-    private fun setTitle() {
-        thread {
-            mc.mainWindow.setWindowTitle("FHax16")
-        }
     }
 }

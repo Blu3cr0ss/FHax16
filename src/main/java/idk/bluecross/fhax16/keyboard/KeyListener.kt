@@ -14,7 +14,7 @@ object KeyListener {
     }
 
     @SubscribeEvent
-    fun onKey(e: KeyInputEvent) {         // TODO: rewrite to new event manager
+    fun onKey(e: KeyInputEvent) {
         if (e.key != GLFW.GLFW_KEY_UNKNOWN) {
             binds[e.key]?.invoke()
         }
