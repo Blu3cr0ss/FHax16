@@ -7,3 +7,4 @@ import org.apache.logging.log4j.LogManager
 val LOGGER = LogManager.getLogger("FHax16")
 val mc = Minecraft.getInstance()
 val modules = arrayListOf<Module>()
+val player = mc.player

@@ -25,6 +25,7 @@ class FHax16 {
         mc.mainWindow.setWindowTitle("")
         try {
             ConfigManager.getCfg()
+            ConfigManager.getBinds()
         }catch (e:Exception){
             LOGGER.error("Failed loading cfg on startup")
         }

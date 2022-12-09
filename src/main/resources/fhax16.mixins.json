@@ -9,7 +9,10 @@
   "refmap": "fhax16.mixins.refmap.json",
   "mixins": [
     "MixinAbstractHorse",
-    "MixinNetworkManager"
+    "MixinBlock",
+    "MixinNetworkManager",
+    "noslow.MixinCobweb",
+    "noslow.MixinSlimeBlock"
   ],
   "client": [
     "MixinMainWindow"

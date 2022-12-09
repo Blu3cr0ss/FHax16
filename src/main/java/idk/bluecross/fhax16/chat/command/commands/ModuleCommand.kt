@@ -2,6 +2,7 @@ package idk.bluecross.fhax16.chat.command.commands
 
 import idk.bluecross.fhax16.chat.command.AbstractCommand
 import idk.bluecross.fhax16.chat.command.ChatCommandsManager.prefix
+import idk.bluecross.fhax16.config.ConfigManager
 import idk.bluecross.fhax16.module.Module
 import idk.bluecross.fhax16.modules
 import idk.bluecross.fhax16.util.ChatUtil
@@ -35,6 +36,7 @@ object ModuleCommand : AbstractCommand("module") {
                     val list = arrayListOf(name)
                     list.addAll(otherArgs.subList(1, otherArgs.size))
                     Bind.process(list)
+                    ConfigManager.saveBinds()
                 }
 
                 else -> {

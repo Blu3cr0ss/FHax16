@@ -40,6 +40,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             arg '-mixin.config=fhax16.mixins.json'
+            arg '--username=Bluecross'
             mods {
                 fhax16 {
                     source sourceSets.main

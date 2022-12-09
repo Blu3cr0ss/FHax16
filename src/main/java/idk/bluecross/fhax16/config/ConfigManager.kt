@@ -10,6 +10,7 @@ import java.io.File
 
 object ConfigManager {
     var file = File("FHax16/configs", "default.fhaxcfg")
+    val binds = File("FHax16", "keybinds.txt")
     val mapper = ObjectMapper()
     val jackson = mapper.setVisibility(
         mapper.serializationConfig.defaultVisibilityChecker
@@ -24,6 +25,31 @@ object ConfigManager {
 
     init {
         file.createIfNotExist()
+    }
+
+    fun getBinds() {
+        try {
+            binds.readLines().forEach {
+                modules.firstOrNull { q -> it.split(": ")[0] == q.name }?.let { m ->
+                    m.setBind(it.split(": ")[1].trim().toInt())
+                }
+            }
+        } catch (e: Exception) {
+            LOGGER.error("error loading binds")
+        }
+    }
+
+    fun saveBinds() {
+        try {
+            val list = modules
+            val builder = StringBuilder()
+            list.forEach {
+                builder.append(it.name + ": " + it.key + "\n")
+            }
+            binds.writeText(builder.toString())
+        } catch (e: Exception) {
+            LOGGER.error("error saving binds")
+        }
     }
 
     fun saveCfg(file: File = this.file) {
@@ -61,12 +87,13 @@ object ConfigManager {
         }
         return arrayOf()
     }
+
     fun File.createIfNotExist(): File {
         val file = this
-        try{
+        try {
             if (!file.parentFile.exists()) file.parentFile.mkdirs()
             if (!file.exists()) file.createNewFile()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return file
