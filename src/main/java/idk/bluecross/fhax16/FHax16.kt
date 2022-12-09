@@ -22,6 +22,12 @@ class FHax16 {
 
     private fun setup(event: FMLCommonSetupEvent) {
         LOGGER.info("setup()")
+        mc.mainWindow.setWindowTitle("")
+        try {
+            ConfigManager.getCfg()
+        }catch (e:Exception){
+            LOGGER.error("Failed loading cfg on startup")
+        }
     }
 
     private fun doClientStuff(event: FMLClientSetupEvent) {
@@ -35,7 +41,6 @@ class FHax16 {
         allClasses.forEach {
             (it.classLoader.loadClass(it.canonicalName).kotlin.objectInstance as? Module)?.let { module ->
                 val pkg = it.`package`.name.split(".").last()
-                LOGGER.info(pkg)
                 module.category = module.getCategoryByString(pkg)
             }
         }

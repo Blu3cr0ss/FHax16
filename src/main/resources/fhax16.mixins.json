@@ -8,6 +8,10 @@
   },
   "refmap": "fhax16.mixins.refmap.json",
   "mixins": [
-    "MixinAbstractHorse"
+    "MixinAbstractHorse",
+    "MixinNetworkManager"
+  ],
+  "client": [
+    "MixinMainWindow"
   ]
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import idk.bluecross.fhax16.LOGGER
 import idk.bluecross.fhax16.modules
 import java.io.File
 
@@ -22,13 +23,13 @@ object ConfigManager {
         .enable(SerializationFeature.INDENT_OUTPUT)
 
     init {
-        if (!file.parentFile.exists()) file.parentFile.mkdirs()
-        if (!file.exists()) file.createNewFile()
+        file.createIfNotExist()
     }
 
     fun saveCfg(file: File = this.file) {
         try {
             jackson.writeValue(file, modules)
+            LOGGER.info("saved cfg")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -40,22 +41,34 @@ object ConfigManager {
             val result = jackson.readValue(file, tobe::class.java)
             result.forEach {
                 it.forEach {
-                    val realModule = modules.first { m -> m.name == it.key }
-                    val settings = it.value
-                    if (settings["enabled"].toBoolean()) realModule.enable() else realModule.disable()
-                    settings.remove("enabled")
-                    settings.forEach { q ->
-                        val setting = realModule.settings.firstOrNull {
-                            it.name == q.key
-                        } ?: return@forEach
-                        setting.setValByString(q.value)
+                    val realModule = modules.firstOrNull { m -> m.name == it.key }?.let { realModule ->
+                        val settings = it.value
+                        if (settings["enabled"].toBoolean()) realModule.enable() else realModule.disable()
+                        settings.remove("enabled")
+                        settings.forEach { q ->
+                            val setting = realModule.settings.firstOrNull {
+                                it.name == q.key
+                            } ?: return@forEach
+                            setting.setValByString(q.value)
+                        }
                     }
                 }
             }
+            LOGGER.info("loaded cfg")
             return result
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return arrayOf()
+    }
+    fun File.createIfNotExist(): File {
+        val file = this
+        try{
+            if (!file.parentFile.exists()) file.parentFile.mkdirs()
+            if (!file.exists()) file.createNewFile()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        return file
     }
 }

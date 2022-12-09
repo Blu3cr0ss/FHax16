@@ -2,7 +2,9 @@ package idk.bluecross.fhax16.module
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
+import idk.bluecross.fhax16.LOGGER
 import idk.bluecross.fhax16.keyboard.KeyBind
+import idk.bluecross.fhax16.keyboard.binds
 import idk.bluecross.fhax16.modules
 import idk.bluecross.fhax16.settings.ISettingAbstract
 import net.minecraftforge.common.MinecraftForge
@@ -40,16 +42,28 @@ abstract class Module(
         return mapOf(name to map)
     }
 
+    fun setBind(key: Int) {
+        this.key = key
+        LOGGER.info("old keybind: "+keybind.key)
+        LOGGER.info(binds)
+        binds.remove(this.keybind)
+        this.keybind = KeyBind(key, ::toggle)
+        LOGGER.info("new keybind: "+keybind.key)
+        LOGGER.info(binds)
+    }
+
     @JsonIgnore
     fun isEnabled() = isEnabled
 
     fun enable() {
         isEnabled = true
+        LOGGER.info(name + " enabled")
         onEnableAndReg()
     }
 
     fun disable() {
         isEnabled = false
+        LOGGER.info(name + " disabled")
         onDisableAndReg()
     }
 

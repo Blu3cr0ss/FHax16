@@ -28,16 +28,21 @@ object ModuleCommand : AbstractCommand("module") {
 
                 "settings" -> {
                     val list = arrayListOf(name)
-                    list.addAll(otherArgs.subList(1, otherArgs.size))
                     SettingList.process(list)
                 }
 
+                "bind" -> {
+                    val list = arrayListOf(name)
+                    list.addAll(otherArgs.subList(1, otherArgs.size))
+                    Bind.process(list)
+                }
+
                 else -> {
-                    ChatUtil.sendToMe("Something went wrong. Usage: ${prefix}module *name* enable/disable or ${prefix}module list or ${prefix}module *name* setting *name* *value*")
+                    ChatUtil.sendToMe("Something went wrong. Usage: ${prefix}module *name* enable/disable or ${prefix}module list or ${prefix}module *name* setting *name* *value* or module *name* info or module *name* bind *key*")
                 }
             }
         } catch (e: Exception) {
-            ChatUtil.sendToMe("Something went wrong. Usage: ${prefix}module *name* enable/disable or ${prefix}module list or ${prefix}module *name* setting *name* *value*")
+            ChatUtil.sendToMe("Something went wrong. Usage: ${prefix}module *name* enable/disable or ${prefix}module list or ${prefix}module *name* setting *name* *value* or module *name* info or module *name* bind *key*")
             e.printStackTrace()
         }
     }
@@ -60,6 +65,7 @@ object ModuleCommand : AbstractCommand("module") {
             val str = "name: ${module.name}\n" +
                     "description: ${module.description}\n" +
                     "category: ${module.category}\n" +
+                    "keybind: ${module.key}\n" +
                     "enabled: ${module.isEnabled()}"
             ChatUtil.sendToMe(str)
         }
@@ -90,6 +96,17 @@ object ModuleCommand : AbstractCommand("module") {
                 prettyList += it.getPrettyInfo() + "\n"
             }
             ChatUtil.sendToMe(prettyList.trim())
+        }
+    }
+
+    object Bind : SubCommand() {
+        override fun process(args: ArrayList<String>) {
+            val name = args[0]
+            val bind = args[1]
+            if (bind.matches(Regex("^\\d+$")))
+                modules.firstOrNull { it.name.lowercase() == name.lowercase() }?.setBind(bind.toInt())
+                    ?: ChatUtil.sendToMe("module not found")
+            else ChatUtil.sendToMe("For now we are only using GLFW key id's to bind modules. Here more: https://www.glfw.org/docs/3.3/group__keys.html")
         }
     }
 }

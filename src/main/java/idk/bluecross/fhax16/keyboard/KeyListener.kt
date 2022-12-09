@@ -13,8 +13,8 @@ object KeyListener {
 
     @SubscribeEvent
     fun onKey(e: KeyInputEvent) {
-        if (e.key != GLFW.GLFW_KEY_UNKNOWN) {
-            binds[e.key]?.forEach { it.invoke() }
+        if (e.key != GLFW.GLFW_KEY_UNKNOWN && e.action == GLFW.GLFW_PRESS) {
+            binds.filter { it.key == e.key }.forEach { it.lambda.invoke() }
         }
     }
 }

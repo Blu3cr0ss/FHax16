@@ -26,7 +26,7 @@ class IntSetting(
 
     fun value() = value
     override fun setValByString(str: String): String {
-        if (Regex("^(\\d+)$").matches(str)) {   // only numbers or nums and one dot
+        if (Regex("^(\\d+)$").matches(str)) {   // only numbers
             set(str.toInt())
             return "Success!"
         } else {

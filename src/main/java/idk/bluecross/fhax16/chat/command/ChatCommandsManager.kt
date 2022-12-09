@@ -1,6 +1,8 @@
 package idk.bluecross.fhax16.chat.command
 
+import idk.bluecross.fhax16.event.PacketEvent
 import idk.bluecross.fhax16.util.ChatUtil
+import net.minecraft.network.play.client.CChatMessagePacket
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.eventbus.api.SubscribeEvent
@@ -48,7 +50,13 @@ object ChatCommandsManager {
             } else {
                 ChatUtil.sendToMe("Command not found")
             }
-            e.isCanceled = true
+        }
+    }
+
+    @SubscribeEvent
+    fun onPacket(e: PacketEvent.Send) {
+        if (e.packet is CChatMessagePacket && e.packet.message.trim().startsWith(prefix)) {
+            e.cancel()
         }
     }
 }

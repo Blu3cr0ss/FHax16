@@ -1,9 +1,9 @@
 package idk.bluecross.fhax16.keyboard
 
-val binds = hashMapOf<Int, ArrayList<() -> Unit>>()
+val binds = ArrayList<KeyBind>()
 
 class KeyBind(val key: Int, val lambda: () -> Unit) {
     init {
-        binds[key]?.add(lambda)
+        binds.add(this)
     }
 }
