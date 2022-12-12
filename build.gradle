@@ -66,25 +66,11 @@ minecraft {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
     shadow 'org.reflections:reflections:0.10.2'
-    shadow("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version") {
-        exclude module: 'kotlin-stdlib-common'
-        exclude module: 'annotations'
-    }
-    shadow('org.jetbrains.kotlin:kotlin-reflect:1.7.22') {
-        exclude module: 'kotlin-stdlib'
-    }
-    shadow('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4') {
-        exclude module: 'kotlin-stdlib-jdk8'
-        exclude module: 'kotlin-stdlib-common'
-    }
-    shadow('org.spongepowered:mixin:0.8.5') {
-        exclude module: 'commons-io'
-        exclude module: 'gson'
-        exclude module: 'guava'
-    }
-    annotationProcessor('org.spongepowered:mixin:0.8.5:processor') {
-        exclude module: 'gson'
-    }
+    shadow("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    shadow('org.jetbrains.kotlin:kotlin-reflect:1.7.22')
+    shadow('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4')
+    shadow('org.spongepowered:mixin:0.8.5')
+    annotationProcessor('org.spongepowered:mixin:0.8.5:processor')
     shadow 'com.fasterxml.jackson.core:jackson-core:2.14.0'
     shadow 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
     shadow 'com.fasterxml.jackson.core:jackson-annotations:2.14.0'
@@ -126,9 +112,8 @@ shadowJar {
             'META-INF/*.version',
             'META-INF/LICENSE',
             'META-INF/NOTICE',
-            'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
-    // <----- idk why but forge dont detect mod without deleting this shit
-
+            'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'// <-- idk why but forge dont detect mod without deleting this shit
+    relocate 'org.reflections','idk.bluecross.dependencies.reflections'
     finalizedBy('reobfShadowJar')
 }
 
