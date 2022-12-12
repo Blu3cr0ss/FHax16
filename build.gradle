@@ -34,6 +34,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 
 minecraft {
 //    mappings channel: 'official', version: '1.16.5'
     mappings channel: 'snapshot', version: '20210309-1.16.5'
+    accessTransformer = file('src/main/resources/META-INF/fhax_at.cfg')
     runs {
         client {
             workingDirectory project.file('run')
@@ -94,7 +95,7 @@ dependencies {
 shadowJar {
     classifier 'readyToGo'
 
-        manifest {
+    manifest {
         attributes([
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
@@ -103,7 +104,8 @@ shadowJar {
 
                 "TweakClass"              : "org.spongepowered.asm.launch.MixinTweaker",
                 "TweakOrder"              : 0,
-                "MixinConfigs"            : "fhax16.mixins.json"
+                "MixinConfigs"            : "fhax16.mixins.json",
+                'FMLAT'                   : 'fhax_at.cfg'
         ])
     }
 
@@ -121,7 +123,11 @@ shadowJar {
             'META-INF/*.kotlin_module',
             'kotlin/**/*.kotlin_metadata',
             'kotlin/**/*.kotlin_builtins',
-            'META-INF/*.version'
+            'META-INF/*.version',
+            'META-INF/LICENSE',
+            'META-INF/NOTICE',
+            'META-INF/services/cpw.mods.modlauncher.api.ITransformationService'
+    // <----- idk why but forge dont detect mod without deleting this shit
 
     finalizedBy('reobfShadowJar')
 }

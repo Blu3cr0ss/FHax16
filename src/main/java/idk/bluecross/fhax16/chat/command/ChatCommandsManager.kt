@@ -1,5 +1,6 @@
 package idk.bluecross.fhax16.chat.command
 
+import idk.bluecross.fhax16.LOGGER
 import idk.bluecross.fhax16.event.PacketEvent
 import idk.bluecross.fhax16.util.ChatUtil
 import net.minecraft.network.play.client.CChatMessagePacket
@@ -26,6 +27,7 @@ object ChatCommandsManager {
                 )
             }
         }
+        LOGGER.info(commandsList)
     }
 
     var prefix = "!"

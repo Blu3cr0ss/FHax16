@@ -10,9 +10,8 @@
   "mixins": [
     "MixinAbstractHorse",
     "MixinBlock",
+    "MixinCobweb",
     "MixinNetworkManager",
-    "noslow.MixinCobweb",
-    "noslow.MixinSlimeBlock"
   ],
   "client": [
     "MixinMainWindow"

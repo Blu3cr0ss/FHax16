@@ -35,10 +35,10 @@ abstract class Module(
     @JsonAnyGetter
     private fun collectSettingsToJson(): Map<String, HashMap<String, String>> {
         val map = hashMapOf<String, String>()
-        map["enabled"] = isEnabled.toString()
         map.putAll(
             settings.stream().collect(Collectors.toMap(ISettingAbstract::name, ISettingAbstract::getValueAsString))
         );
+        map["enabled"] = isEnabled.toString()
         return mapOf(name to map)
     }
 

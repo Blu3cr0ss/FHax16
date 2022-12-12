@@ -23,12 +23,6 @@ class FHax16 {
     private fun setup(event: FMLCommonSetupEvent) {
         LOGGER.info("setup()")
         mc.mainWindow.setWindowTitle("")
-        try {
-            ConfigManager.getCfg()
-            ConfigManager.getBinds()
-        }catch (e:Exception){
-            LOGGER.error("Failed loading cfg on startup")
-        }
     }
 
     private fun doClientStuff(event: FMLClientSetupEvent) {
@@ -49,5 +43,11 @@ class FHax16 {
         KeyListener //init
         ChatCommandsManager
         ConfigManager
+        try {
+            ConfigManager.getCfg()
+            ConfigManager.getBinds()
+        }catch (e:Exception){
+            LOGGER.error("Failed loading cfg on startup")
+        }
     }
 }

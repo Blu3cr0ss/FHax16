@@ -25,6 +25,7 @@ object ConfigManager {
 
     init {
         file.createIfNotExist()
+        binds.createIfNotExist()
     }
 
     fun getBinds() {
@@ -36,6 +37,12 @@ object ConfigManager {
             }
         } catch (e: Exception) {
             LOGGER.error("error loading binds")
+            LOGGER.warn("Trying to create new cfg")
+            try{
+                ConfigManager.saveCfg()
+            }catch(e2:Exception){
+                LOGGER.error("Bruh, we failed again. Go submit bug report to devs")
+            }
         }
     }
 
@@ -84,6 +91,13 @@ object ConfigManager {
             return result
         } catch (e: Exception) {
             e.printStackTrace()
+            LOGGER.error("error loading binds")
+            LOGGER.warn("Trying to create new binds file")
+            try{
+                ConfigManager.saveCfg()
+            }catch(e2:Exception){
+                LOGGER.error("Bruh, we failed again. Go submit bug report to devs")
+            }
         }
         return arrayOf()
     }
