@@ -35,8 +35,8 @@ object ChatCommandsManager {
     @SubscribeEvent
     fun onMessage(e: ClientChatEvent) {
         var msg = e.message.trim()
-        if (msg.startsWith("!")) {
-            msg = msg.removePrefix("!")
+        if (msg.startsWith(prefix)) {
+            msg = msg.removePrefix(prefix)
             val cmd = commandsList.firstOrNull {
                 it.cmd.lowercase() == msg.split(" ")[0].lowercase()
             }

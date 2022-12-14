@@ -11,7 +11,7 @@
     "MixinAbstractHorse",
     "MixinBlock",
     "MixinCobweb",
-    "MixinNetworkManager",
+    "MixinNetworkManager"
   ],
   "client": [
     "MixinMainWindow"

@@ -3,6 +3,7 @@ package idk.bluecross.fhax16
 import idk.bluecross.fhax16.chat.command.ChatCommandsManager
 import idk.bluecross.fhax16.config.ConfigManager
 import idk.bluecross.fhax16.keyboard.KeyListener
+import idk.bluecross.fhax16.module.CLIENT.Logo
 import idk.bluecross.fhax16.module.Module
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
@@ -55,5 +56,6 @@ class FHax16 {
                 module.category = module.getCategoryByString(pkg)
             }
         }
+        Logo.enable()
     }
 }

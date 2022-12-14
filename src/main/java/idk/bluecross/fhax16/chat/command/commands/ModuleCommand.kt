@@ -77,6 +77,10 @@ object ModuleCommand : AbstractCommand("module") {
         override fun process(args: ArrayList<String>) {
             val name = args[0].lowercase()
             val settingName = args[1].lowercase()
+            if (args.size < 3) {
+                SettingList.process(arrayListOf(name));
+                return
+            }
             val value = args[2].lowercase()      // value
             val setting = modules.first {
                 it.name.lowercase() == name.lowercase()

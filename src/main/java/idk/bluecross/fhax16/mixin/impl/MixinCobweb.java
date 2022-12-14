@@ -1,5 +1,6 @@
 package idk.bluecross.fhax16.mixin.impl;
 
+import idk.bluecross.fhax16.GlobalsKt;
 import idk.bluecross.fhax16.module.MOVEMENT.NoSlow;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.WebBlock;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinCobweb {
     @Inject(method = "onEntityCollision", at = @At(("HEAD")), cancellable = true)
     public void cancelSlowness(BlockState p_196262_1_, World p_196262_2_, BlockPos p_196262_3_, Entity p_196262_4_, CallbackInfo ci) {
-        if (NoSlow.INSTANCE.isEnabled() && NoSlow.INSTANCE.getCobweb().value()) {
+        if (NoSlow.INSTANCE.isEnabled() && NoSlow.INSTANCE.getCobweb().value() && p_196262_4_ == GlobalsKt.getMc().player) {
             ci.cancel();
         }
     }

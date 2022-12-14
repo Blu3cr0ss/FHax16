@@ -35,20 +35,20 @@ abstract class Module(
     @JsonAnyGetter
     private fun collectSettingsToJson(): Map<String, HashMap<String, String>> {
         val map = hashMapOf<String, String>()
+        map["enabled"] = isEnabled.toString()
         map.putAll(
             settings.stream().collect(Collectors.toMap(ISettingAbstract::name, ISettingAbstract::getValueAsString))
         );
-        map["enabled"] = isEnabled.toString()
         return mapOf(name to map)
     }
 
     fun setBind(key: Int) {
         this.key = key
-        LOGGER.info("old keybind: "+keybind.key)
+        LOGGER.info("old keybind: " + keybind.key)
         LOGGER.info(binds)
         binds.remove(this.keybind)
         this.keybind = KeyBind(key, ::toggle)
-        LOGGER.info("new keybind: "+keybind.key)
+        LOGGER.info("new keybind: " + keybind.key)
         LOGGER.info(binds)
     }
 
@@ -99,6 +99,7 @@ abstract class Module(
     }
 
     fun getCategoryByString(str: String): Category {
+        if (::category.isInitialized) return category
         return when (str.uppercase()) {
             "MISC" -> Category.MISC
             "PVP" -> Category.PVP
